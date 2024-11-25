@@ -1,0 +1,7 @@
+-------------------------------------------------------------------------------
+Test set: TestProjet$calculTVAFraisDeTransformation
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 2, Time elapsed: 0.075 s -- in TestProjet$calculTVAFraisDeTransformation
+TestProjet$calculTVAFraisDeTransformation skipped
+TestProjet$calculTVAFraisDeTransformation.calculTVAFraisTransformationSimple -- Time elapsed: 0.061 s
+TestProjet$calculTVAFraisDeTransformation skipped

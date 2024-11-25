@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Projet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sample_maven</a> &gt; <a href="index.source.html" class="el_package">Pret</a> &gt; <span class="el_source">Projet.java</span></div><h1>Projet.java</h1><pre class="source lang-java linenums">package Pret;
+
+<span class="fc" id="L3">public class Projet {</span>
+    /*
+     * Cette classe couvre l'ensemble des méthodes nécessaires au calcul d'un pret hypothecaire.
+     */
+    private int revenuCadastral;
+    private double prixHabitation;
+    private double fraisNotaireAchat;
+    private double fraisTransformation; // Aka travaux de rénovation   
+   
+
+
+    /**
+     * Calcule le total à emprunter à la banque pour le projet.
+     * @return double emprunt
+     */
+    public double calculResteAEmprunter(){
+<span class="nc" id="L19">        return this.calculTotalProjetAchat() - this.calculApportMinimal();</span>
+    }
+
+    /**
+     * Calcule l'apport minimal nécessaire pour le projet d'achat.
+     * @return doube apport minimal
+     */
+    public double calculApportMinimal(){
+<span class="nc" id="L27">        return 0.1 * (this.prixHabitation + this. fraisTransformation + this.calculTVAFraisTransformation())</span>
+<span class="nc" id="L28">         + this.calculDroitEnregistrement() + this.fraisNotaireAchat;</span>
+    }
+
+    /**
+     * Calcule le coût total du projet d'Achat
+     * @return double total
+     */
+    public double calculTotalProjetAchat(){
+<span class="nc" id="L36">        return this.prixHabitation +</span>
+            this.fraisNotaireAchat +
+<span class="nc" id="L38">            this.calculDroitEnregistrement() +</span>
+            this.fraisTransformation +
+<span class="nc" id="L40">            this.calculTVAFraisTransformation();</span>
+    }
+
+    /**
+     * Calcule le montant du droit d'enregistrement.
+     * @return double droit d'enregistrement
+     */
+    public double calculDroitEnregistrement(){
+<span class="nc" id="L48">        float taux = 0.125f;</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        if (this.revenuCadastral &lt;= 745){</span>
+<span class="nc" id="L50">             taux = 0.06f;  </span>
+        }
+<span class="nc" id="L52">        return (double) taux * (this.prixHabitation - this.calculAbattement());</span>
+    }
+
+
+
+    /**
+     * Calcule l'abattement fiscal possible, en s'assurant qu'il ne dépasse pas le prix de l'habitation.
+     * @return double abattement
+     */
+    public double calculAbattement() {
+        double abattement;
+<span class="nc bnc" id="L63" title="All 2 branches missed.">        if (this.prixHabitation &lt; 350_000) {</span>
+<span class="nc" id="L64">            abattement = 40_000;</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        } else if (this.prixHabitation &gt;= 500_000) {</span>
+<span class="nc" id="L66">            abattement = 20_000;</span>
+        } else {
+<span class="nc" id="L68">            abattement = 40_000 - (20_000 * (this.prixHabitation - 350_000) / (500_000 - 350_000));</span>
+        }
+        // Vérifie que l'abattement n'excède pas le prix de l'habitation
+<span class="nc" id="L71">        return Math.min(abattement, this.prixHabitation);</span>
+    }
+
+
+
+
+
+    /**
+     * Calcule la tva sur les frais de transformation
+     * @return doube TVA
+     */
+    public double calculTVAFraisTransformation(){
+<span class="fc" id="L83">        return 0.06 * this.fraisTransformation;</span>
+    }
+
+
+
+    public int getRevenuCadastral() {
+<span class="nc" id="L89">        return revenuCadastral;</span>
+    }
+
+    public void setRevenuCadastral(int revenuCadastral) {
+<span class="nc" id="L93">        this.revenuCadastral = revenuCadastral;</span>
+<span class="nc" id="L94">    }</span>
+
+
+    public double getPrixHabitation() {
+<span class="nc" id="L98">        return prixHabitation;</span>
+    }
+
+    public void setPrixHabitation(double prixHabitation) {
+<span class="nc" id="L102">        this.prixHabitation = prixHabitation;</span>
+<span class="nc" id="L103">    }</span>
+    
+
+    public double getFraisNotaireAchat() {
+<span class="nc" id="L107">        return fraisNotaireAchat;</span>
+    }
+
+    public void setFraisNotaireAchat(double fraisNotaireAchat) {
+<span class="nc" id="L111">        this.fraisNotaireAchat = fraisNotaireAchat;</span>
+<span class="nc" id="L112">    }</span>
+
+    public double getFraisTransformation() {
+<span class="nc" id="L115">        return fraisTransformation;</span>
+    }
+
+    public void setFraisTransformation(double fraisTransformation) {
+<span class="fc" id="L119">        this.fraisTransformation = fraisTransformation;</span>
+<span class="fc" id="L120">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
