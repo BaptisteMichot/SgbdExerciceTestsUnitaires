@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: ITApp
 -------------------------------------------------------------------------------
-Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.113 s <<< FAILURE! -- in ITApp
-ITApp.happyPath -- Time elapsed: 0.061 s <<< FAILURE!
+Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.105 s <<< FAILURE! -- in ITApp
+ITApp.happyPath -- Time elapsed: 0.060 s <<< FAILURE!
 org.opentest4j.AssertionFailedError: expected: <30084.99991953373> but was: <30084.99>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
 	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
@@ -15,7 +15,7 @@ org.opentest4j.AssertionFailedError: expected: <30084.99991953373> but was: <300
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
 
-ITApp.testAchatEleve -- Time elapsed: 0.003 s <<< FAILURE!
+ITApp.testAchatEleve -- Time elapsed: 0.004 s <<< FAILURE!
 org.opentest4j.AssertionFailedError: expected: <601700.0> but was: <601700.03>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
 	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)

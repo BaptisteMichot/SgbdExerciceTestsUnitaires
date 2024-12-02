@@ -106,7 +106,6 @@ public class TestProjet {
     }
 
 
-    @Disabled
     @Nested
     @DisplayName("Calcul du montant total de l'achat")
     public class calculTotalProjetAchat {
@@ -180,6 +179,14 @@ public class TestProjet {
                     Mockito.doReturn(0.00).when(mockedProjet).calculTVAFraisTransformation();
                     Mockito.doReturn(22_000.01).when(mockedProjet).calculDroitEnregistrement();
                     Assertions.assertEquals(430_000.21, mockedProjet.calculTotalProjetAchat(), 0.001);
+                },
+                () -> {
+                    mockedProjet.setPrixHabitation(400_000.20);
+                    mockedProjet.setFraisNotaireAchat(8_000.50);
+                    mockedProjet.setFraisTransformation(500.95);
+                    Mockito.doReturn(30.057).when(mockedProjet).calculTVAFraisTransformation();
+                    Mockito.doReturn(22_000.01).when(mockedProjet).calculDroitEnregistrement();
+                    Assertions.assertEquals(430_531.717, mockedProjet.calculTotalProjetAchat(), 0.001);
                 }
             );
         }
@@ -239,7 +246,7 @@ public class TestProjet {
 
         @ParameterizedTest
         @ValueSource(doubles = { -600.00, -30.00 })
-        @DisplayName("Calcul du montant total de l'achat: TVA sur les frais de transformation négative")
+        @DisplayName("Calcul du montant total de l'achat : TVA sur les frais de transformation négative")
         public void calculTotalProjetAchatTVAFraisTransformationNegative(double valeurTVA){
 
             Assertions.assertAll(
@@ -275,6 +282,179 @@ public class TestProjet {
                     Mockito.doReturn(120.00).when(mockedProjet).calculTVAFraisTransformation();
                     Mockito.doReturn(-22_000.00).when(mockedProjet).calculDroitEnregistrement();
                     Assertions.assertThrows(Exception.class, () -> projet.calculTotalProjetAchat());
+                }
+            );
+        }
+
+    }
+
+    @Nested
+    @DisplayName("Calcul de l'apport minimal")
+    public class calculApportMinimal{
+
+        @Test
+        @DisplayName("Calcul de l'apport minimal : validation simple")
+        public void calculApportMinimalSimple(){
+
+            Assertions.assertAll(
+                () -> {
+                    mockedProjet.setPrixHabitation(300_000.00);
+                    mockedProjet.setFraisNotaireAchat(6_000.00);
+                    mockedProjet.setFraisTransformation(10_000.00);
+                    Mockito.doReturn(600.00).when(mockedProjet).calculTVAFraisTransformation();
+                    Mockito.doReturn(15_600.00).when(mockedProjet).calculDroitEnregistrement();
+                    Assertions.assertEquals(52_660.00, mockedProjet.calculApportMinimal());
+                },
+                () -> {
+                    mockedProjet.setPrixHabitation(400_000.00);
+                    mockedProjet.setFraisNotaireAchat(8_000.00);
+                    mockedProjet.setFraisTransformation(0.00);
+                    Mockito.doReturn(0.00).when(mockedProjet).calculTVAFraisTransformation();
+                    Mockito.doReturn(22_000.00).when(mockedProjet).calculDroitEnregistrement();
+                    Assertions.assertEquals(70_000.00, mockedProjet.calculApportMinimal());
+                },
+                () -> {
+                    mockedProjet.setPrixHabitation(600_000.00);
+                    mockedProjet.setFraisNotaireAchat(12_000.00);
+                    mockedProjet.setFraisTransformation(10_000.00);
+                    Mockito.doReturn(600.00).when(mockedProjet).calculTVAFraisTransformation();
+                    Mockito.doReturn(34_800.00).when(mockedProjet).calculDroitEnregistrement();
+                    Assertions.assertEquals(107_860.00, mockedProjet.calculApportMinimal());
+                },
+                () -> {
+                    mockedProjet.setPrixHabitation(0.00);
+                    mockedProjet.setFraisNotaireAchat(0.00);
+                    mockedProjet.setFraisTransformation(0.00);
+                    Mockito.doReturn(0.00).when(mockedProjet).calculTVAFraisTransformation();
+                    Mockito.doReturn(0.00).when(mockedProjet).calculDroitEnregistrement();
+                    Assertions.assertEquals(0.00, mockedProjet.calculApportMinimal());
+                }
+            );
+        }
+
+
+        @Test
+        @DisplayName("Calcul de l'apport minimal : validation des arrondis")
+        public void calculApportMinimalArrondi(){
+
+            Assertions.assertAll(
+                () -> {
+                    mockedProjet.setPrixHabitation(300_000.50);
+                    mockedProjet.setFraisNotaireAchat(6_000.01);
+                    mockedProjet.setFraisTransformation(10_000.00);
+                    Mockito.doReturn(600.00).when(mockedProjet).calculTVAFraisTransformation();
+                    Mockito.doReturn(15_600.03).when(mockedProjet).calculDroitEnregistrement();
+                    Assertions.assertEquals(52_660.09, mockedProjet.calculApportMinimal(), 0.001);
+                },
+                () -> {
+                    mockedProjet.setPrixHabitation(1.00);
+                    mockedProjet.setFraisNotaireAchat(0.02);
+                    mockedProjet.setFraisTransformation(0.00);
+                    Mockito.doReturn(0.00).when(mockedProjet).calculTVAFraisTransformation();
+                    Mockito.doReturn(0.00).when(mockedProjet).calculDroitEnregistrement();
+                    Assertions.assertEquals(0.12, mockedProjet.calculApportMinimal(), 0.001);
+                },
+                () -> {
+                    mockedProjet.setPrixHabitation(400_000.20);
+                    mockedProjet.setFraisNotaireAchat(8_000.50);
+                    mockedProjet.setFraisTransformation(500.95);
+                    Mockito.doReturn(30.057).when(mockedProjet).calculTVAFraisTransformation();
+                    Mockito.doReturn(22_000.01).when(mockedProjet).calculDroitEnregistrement();
+                    Assertions.assertEquals(70_053.6307, mockedProjet.calculApportMinimal());
+                }
+            );
+        }
+
+
+        @ParameterizedTest
+        @ValueSource(doubles = { -300_000.00, -400_000.00 })
+        @DisplayName("Calcul de l'apport minimal : prix habitation négatif")
+        public void calculApportMinimalPrixHabitationNegatif(double prixHabitation){
+
+            Assertions.assertAll( 
+                () -> {
+                    mockedProjet.setFraisNotaireAchat(2_000.00);
+                    mockedProjet.setFraisTransformation(5_000.00);
+                    Mockito.doReturn(300.00).when(mockedProjet).calculTVAFraisTransformation();
+                    Mockito.doReturn(0.00).when(mockedProjet).calculDroitEnregistrement();
+                    Assertions.assertThrows(Exception.class, () -> projet.calculApportMinimal());
+                }
+            );
+        }
+
+
+        @ParameterizedTest
+        @ValueSource(doubles = { -1_000.00, -2_000.00 })
+        @DisplayName("Calcul de l'apport minimal : frais de notaire négatifs")
+        public void calculApportMinimalFraisNotaireNegatifs(double fraisNotaireAchat){
+
+            Assertions.assertAll(
+                () -> {
+                    mockedProjet.setPrixHabitation(300_000.00);
+                    mockedProjet.setFraisTransformation(10_000.00);
+                    Mockito.doReturn(600.00).when(mockedProjet).calculTVAFraisTransformation();
+                    Mockito.doReturn(15_600.00).when(mockedProjet).calculDroitEnregistrement();
+                    Assertions.assertThrows(Exception.class, () -> projet.calculApportMinimal());
+                }
+            );
+        }
+
+
+        @ParameterizedTest
+        @ValueSource(doubles = { -10_000.00, -500.00 })
+        @DisplayName("Calcul de l'apport minimal : frais de transformation négatifs")
+        public void calculApportMinimalFraisTransformationNegatifs(double fraisTransformation){
+
+            Assertions.assertAll(
+                () -> {
+                    mockedProjet.setPrixHabitation(300_000.00);
+                    mockedProjet.setFraisNotaireAchat(8_000.00);
+                    Mockito.doReturn(0.00).when(mockedProjet).calculTVAFraisTransformation();
+                    Mockito.doReturn(22_000.00).when(mockedProjet).calculDroitEnregistrement();
+                    Assertions.assertThrows(Exception.class, () -> projet.calculApportMinimal());
+                }
+            );
+        }
+
+
+        @ParameterizedTest
+        @ValueSource(doubles = { -600.00, -30.00 })
+        @DisplayName("Calcul de l'apport minimal : TVA sur les frais de transformation négative")
+        public void calculApportMinimalTVAFraisTransformationNegative(double valeurTVA){
+
+            Assertions.assertAll(
+                () -> {
+                    mockedProjet.setPrixHabitation(600_000.00);
+                    mockedProjet.setFraisNotaireAchat(12_000.00);
+                    mockedProjet.setFraisTransformation(10_000.00);
+                    Mockito.doReturn(valeurTVA).when(mockedProjet).calculTVAFraisTransformation();
+                    Mockito.doReturn(34_800.00).when(mockedProjet).calculDroitEnregistrement();
+                    Assertions.assertThrows(Exception.class, () -> projet.calculApportMinimal());
+                }
+            );
+        }
+
+
+        @Test
+        @DisplayName("Calcul de l'apport minimal : droit d'enregistrement négatif")
+        public void calculApportMinimalDroitEnregistrementNegatif(){
+
+            Assertions.assertAll(
+                () -> {
+                    mockedProjet.setPrixHabitation(300_000.00);
+                    mockedProjet.setFraisNotaireAchat(6_000.00);
+                    mockedProjet.setFraisTransformation(1_000.00);
+                    Mockito.doReturn(60.00).when(mockedProjet).calculTVAFraisTransformation();
+                    Mockito.doReturn(-15_600.00).when(mockedProjet).calculDroitEnregistrement();
+                    Assertions.assertThrows(Exception.class, () -> projet.calculApportMinimal());
+                },
+                () -> {
+                    mockedProjet.setPrixHabitation(400_000.00);
+                    mockedProjet.setFraisNotaireAchat(8_000.00);
+                    mockedProjet.setFraisTransformation(2_000.00);
+                    Mockito.doReturn(120.00).when(mockedProjet).calculTVAFraisTransformation();
+                    Mockito.doReturn(-22_000.00).when(mockedProjet).calculDroitEnregistrement();
+                    Assertions.assertThrows(Exception.class, () -> projet.calculApportMinimal());
                 }
             );
         }
