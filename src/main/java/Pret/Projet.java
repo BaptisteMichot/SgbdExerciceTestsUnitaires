@@ -24,7 +24,7 @@ public class Projet {
      * @return doube apport minimal
      */
     public double calculApportMinimal(){
-        return 0.1 * (this.prixHabitation + this. fraisTransformation + this.calculTVAFraisTransformation())
+        return 0.1 * (this.prixHabitation + this.fraisTransformation + this.calculTVAFraisTransformation())
          + this.calculDroitEnregistrement() + this.fraisNotaireAchat;
     }
 

@@ -36,8 +36,7 @@ public class Pret {
      */
     public double calculTotalInterets(double montantEmprunt){
         return this.calculMensualites(montantEmprunt) *
-                this.getMensualites() -
-                montantEmprunt;
+                this.getMensualites() - montantEmprunt;
     }
 
     /**
@@ -49,13 +48,8 @@ public class Pret {
     public double calculMensualites(double montantEmprunt){
         double tauxPeriodique = this.calculTauxPeriodique();
         int mensualites = this.getMensualites();
-        return (montantEmprunt * 
-                tauxPeriodique *
-                Math.pow(1 + tauxPeriodique , mensualites)
-            ) / (
-                Math.pow(1 + tauxPeriodique, mensualites) -
-                1
-            );
+        return (montantEmprunt * tauxPeriodique * Math.pow(1 + tauxPeriodique , mensualites)) 
+            / (Math.pow(1 + tauxPeriodique, mensualites) - 1);
     }
 
     /**
